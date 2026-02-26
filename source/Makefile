@@ -222,7 +222,9 @@ else
 		LDFLAGS += -s MODULARIZE=1 -s EXPORT_NAME="$(EM_EXPORT_NAME)" -s ENVIRONMENT=web,worker,node
 		LDFLAGS += -s PTHREAD_POOL_SIZE=32
 		# -s PTHREAD_POOL_SIZE_STRICT=32
-		LDFLAGS += -s FILESYSTEM=1 -s EXIT_RUNTIME=0 -s "EXPORTED_RUNTIME_METHODS=['FS','ccall']"
+
+		LDFLAGS += -s WASMFS=1 -s FORCE_FILESYSTEM=1 -s EXIT_RUNTIME=0 -s "EXPORTED_RUNTIME_METHODS=['FS','ccall']"
+
 		LDFLAGS += -s ALLOW_MEMORY_GROWTH=1 -s INITIAL_MEMORY=$(EM_INITIAL_MEMORY_SIZE) -s MAXIMUM_MEMORY=4294967296
 		LDFLAGS += -s STACK_SIZE=67108864
 		# LDFLAGS += -s PROXY_TO_PTHREAD
@@ -327,6 +329,7 @@ endif
 #SOURCES  = $(wildcard *.cpp)
 SOURCES  = \
 	main.cpp                                                                   \
+	wasm_opfs.cpp                                                              \
 	types.cpp                                                                  \
 	bitboard.cpp                                                               \
 	misc.cpp                                                                   \
