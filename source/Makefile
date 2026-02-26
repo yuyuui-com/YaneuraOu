@@ -223,14 +223,14 @@ else
 		LDFLAGS += -s PTHREAD_POOL_SIZE=32
 		# -s PTHREAD_POOL_SIZE_STRICT=32
 
-		LDFLAGS += -s WASMFS=1 -s FORCE_FILESYSTEM=1 -s EXIT_RUNTIME=0 -s "EXPORTED_RUNTIME_METHODS=['FS','ccall']" -s "EXPORTED_FUNCTIONS=['_main','_usi_command']"
+		LDFLAGS += -s WASMFS=1 -s FORCE_FILESYSTEM=1 -s EXIT_RUNTIME=0 -s "EXPORTED_RUNTIME_METHODS=['FS','ccall']"
 
 		LDFLAGS += -s ALLOW_MEMORY_GROWTH=1 -s INITIAL_MEMORY=$(EM_INITIAL_MEMORY_SIZE) -s MAXIMUM_MEMORY=4294967296
 		LDFLAGS += -s STACK_SIZE=67108864
 		# LDFLAGS += -s PROXY_TO_PTHREAD
 		# LDFLAGS += -s ALLOW_UNIMPLEMENTED_SYSCALLS
 		# LDFLAGS += -s ASSERTIONS
-		LDFLAGS += -s --closure 1
+		# LDFLAGS += -s --closure 1
 	endif
 endif
 
@@ -251,7 +251,13 @@ endif
 # リンク時最適化。
 # CPPFLAGSとLDFLAGSの両方で-fltoを指定する必要がある。
 # cf. https://gcc.gnu.org/onlinedocs/gcc-6.3.0/gcc/Optimize-Options.html#Optimize-Options
-LTOFLAGS = -flto
+# LTOFLAGS = -flto
+
+ifeq (,$(findstring em++,$(COMPILER)))
+	LTOFLAGS = -flto
+else
+	LTOFLAGS = 
+endif
 
 # wstringを使うためにこのシンボル定義が必要。
 CPPFLAGS  += -DUNICODE
